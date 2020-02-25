@@ -62,19 +62,26 @@ func handleMux(mux *http.ServeMux, pm *ProxyManager) {
 
 	mux.HandleFunc("/", func(res http.ResponseWriter, req *http.Request) {
 		res.Header().Add("Strict-Transport-Security", "max-age=63072000; includeSubDomains")
-		target := "https://google.com"
+		target := "https://example.com"
+
 		if t, ok := pm.ProxyMap[req.Host]; ok {
 			target = t
 		} else {
 			res.WriteHeader(404)
 			fmt.Fprint(res, "404 - Page not found")
 		}
+		
+		url, err := url.Parse(target)
+		if err != nil {
+			fmt.Printf("%v\n", err)
+			os.Exit(1)
+		}
 
-		url, _ := url.Parse(target)
 		proxy := httputil.NewSingleHostReverseProxy(url)
 
 		req.URL.Host = url.Host
-		req.URL.Scheme = url.Scheme
+		req.URL.Scheme = "http"
+		
 		req.Header.Set("X-Forwarded-Host", req.Header.Get("Host"))
 
 		proxy.ServeHTTP(res, req)

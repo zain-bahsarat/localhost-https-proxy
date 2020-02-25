@@ -1,3 +1,4 @@
-www.123.local;http://127.0.0.1:8080/frame.png
-www.456.local;http://127.0.0.1:8080/
-www.789.local;https://github.com/3
+www.intlist-cm.local;http://192.168.99.100:8001
+www.intlist-ci.local;http://192.168.99.100:8001
+api.intlist.local;http://192.168.99.100:8001
+admin.intlist.local;http://192.168.99.100:8001
